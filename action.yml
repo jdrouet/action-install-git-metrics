@@ -12,6 +12,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: list files
+      shell: bash
+      run: ls -lha ${{ github.action_path }}
+
     - name: making script executable
       shell: bash
       run: chmod +x ${{ github.action_path }}/entrypoint.sh
