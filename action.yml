@@ -14,10 +14,10 @@ runs:
   steps:
     - name: making script executable
       shell: bash
-      run: chmod +x ${{ github.action_path }}entrypoint.sh
+      run: chmod +x ${{ github.action_path }}/entrypoint.sh
 
     - name: executing script
       shell: bash
-      run: ${{ github.action_path }}entrypoint.sh
+      run: ${{ github.action_path }}/entrypoint.sh
       env:
         GH_TOKEN: ${{ github.token }}
