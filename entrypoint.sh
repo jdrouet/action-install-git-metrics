@@ -11,6 +11,15 @@ if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo "::error title=⛔ platform arch ($RUNNER_ARCH) not yet supported"
     fi
     export TARGET_FILE=$HOME/.local/bin/git-metrics
+elif [[ "$RUNNER_OS" == "macOS" ]]; then
+    if [[ "$RUNNER_ARCH" == "X64" ]]; then
+        export REMOTE_FILENAME=git-metrics_darwin-x86_64
+    elif [[ "$RUNNER_ARCH" == "ARM64" ]]; then
+        export REMOTE_FILENAME=git-metrics_darwin-aarch64
+    else
+        echo "::error title=⛔ platform arch ($RUNNER_ARCH) not yet supported"
+    fi
+    export TARGET_FILE=$HOME/.local/bin/git-metrics
 else
     echo "::error title=⛔ platform os ($RUNNER_OS) not yet supported"
     exit 1
