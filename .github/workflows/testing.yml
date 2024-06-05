@@ -7,6 +7,14 @@ on:
       - main
 
 jobs:
+  run-on-macos-x64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+      - name: execute git-metrics
+        run: git-metrics --help
+
   run-on-linux-x64:
     runs-on: ubuntu-latest
     steps:
