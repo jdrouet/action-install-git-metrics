@@ -13,7 +13,7 @@ runs:
   using: composite
   steps:
     - name: install gh
-      uses: dev-hanz-ops/install-gh-cli-action@v0.2.0
+      uses: ksivamuthu/actions-setup-gh-cli@v3
 
     - name: install jq
       uses: dcarbone/install-jq-action@v2.1.0
