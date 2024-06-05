@@ -14,5 +14,3 @@ jobs:
       - uses: ./
       - name: execute git-metrics
         run: git-metrics --help
-      - name: execute git metrics
-        run: git metrics --help

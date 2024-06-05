@@ -9,6 +9,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: executing installation script
+    - name: making script executable
       shell: bash
-      run: entrypoint.sh
+      run: chmod +x ${{ github.action_path }}entrypoint.sh
+
+    - name: executing script
+      shell: bash
+      run: ${{ github.action_path }}entrypoint.sh
