@@ -30,7 +30,7 @@ if [ -z "$( echo $GITHUB_PATH | grep $HOME/.local/bin )" ]; then
     echo "$HOME/.local/bin" >> $GITHUB_PATH
 fi
 
-releases=$(curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/jdrouet/git-metrics/releases)
+releases=$(gh api --method GET /repos/jdrouet/git-metrics/releases --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28")
 binary_url=$(echo $releases | jq --raw-output ".[0].assets | map(select(.name == \"$REMOTE_FILENAME\")) | first | .browser_download_url")
 
 curl -L -o $TARGET_FILE $binary_url
