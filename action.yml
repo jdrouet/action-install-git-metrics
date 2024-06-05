@@ -1,0 +1,14 @@
+---
+name: "Install git-metrics"
+description: "This action will download the git-metrics binary from github and install it on the current runner."
+inputs:
+  version:
+    description: "Expected version of git-metrics"
+    required: false
+    default: "latest"
+runs:
+  using: composite
+  steps:
+    - name: executing installation script
+      shell: bash
+      run: entrypoint.sh
