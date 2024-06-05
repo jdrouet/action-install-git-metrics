@@ -12,6 +12,9 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: install gh
+      uses: dev-hanz-ops/install-gh-cli-action@v0.2.0
+
     - name: creating bin directory in path
       shell: bash
       run: |
