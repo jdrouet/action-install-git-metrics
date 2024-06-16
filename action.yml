@@ -9,16 +9,33 @@ inputs:
     description: "Expected version of git-metrics"
     required: false
     default: "latest"
+outputs:
+  already-installed:
+    description: "Wether git-metrics was already installed or not"
+    value: ${{ steps.check-exists.outputs.found == 'true' }}
 runs:
   using: composite
   steps:
+    - name: check if already installed
+      id: check-exists
+      shell: bash
+      run: |
+        if [ -f $HOME/.local/bin/git-metric ]; then
+          echo "found=true" >> $GITHUB_OUTPUT
+        else
+          echo "found=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: install gh
+      if: ${{ steps.check-exists.outputs.found == 'false' }}
       uses: actions4gh/setup-gh@v1.0.2
 
     - name: install jq
+      if: ${{ steps.check-exists.outputs.found == 'false' }}
       uses: dcarbone/install-jq-action@v2.1.0
 
     - name: creating bin directory in path
+      if: ${{ steps.check-exists.outputs.found == 'false' }}
       shell: bash
       run: |
         mkdir -p $HOME/.local/bin
@@ -35,6 +52,7 @@ runs:
       run: git config --global user.email "$GITHUB_ACTOR_ID+$GITHUB_ACTOR@users.noreply.github.com"
 
     - name: downloading binary
+      if: ${{ steps.check-exists.outputs.found == 'false' }}
       shell: bash
       run: |
         if [[ "$RUNNER_OS" == "Linux" ]]; then
