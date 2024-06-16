@@ -16,7 +16,9 @@ runs:
       id: check-exists
       shell: bash
       run: |
-        [ -f $HOME/.local/bin/git-metric ] && echo "found=true" >> $GITHUB_OUTPUT
+        if [ -f $HOME/.local/bin/git-metric ]; then
+          echo "found=true" >> $GITHUB_OUTPUT
+        fi
 
     - name: install gh
       if: ${{ steps.check-exists.outputs.found != 'true' }}
