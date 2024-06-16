@@ -11,8 +11,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jdrouet/action-install-git-metrics@main
-      - uses: jdrouet/action-install-git-metrics@main
+      - uses: ./
+      - uses: ./
+      #- uses: jdrouet/action-install-git-metrics@main
+      #- uses: jdrouet/action-install-git-metrics@main
       - name: execute git-metrics
         run: git-metrics --help
 
@@ -20,7 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jdrouet/action-install-git-metrics@main
-      - uses: jdrouet/action-install-git-metrics@main
+      - uses: ./
+      - uses: ./
+      #- uses: jdrouet/action-install-git-metrics@main
+      #- uses: jdrouet/action-install-git-metrics@main
       - name: execute git-metrics
         run: git-metrics --help
