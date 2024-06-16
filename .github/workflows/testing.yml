@@ -7,16 +7,12 @@ on:
       - main
 
 jobs:
-  run-on-macos-x64:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: jdrouet/action-install-git-metrics@main
-      - name: execute git-metrics
-        run: git-metrics --help
-
-  run-on-linux-x64:
-    runs-on: ubuntu-latest
+  running:
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: ["macos-latest", "ubuntu-latest"]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
       - uses: jdrouet/action-install-git-metrics@main
