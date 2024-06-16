@@ -7,24 +7,21 @@ on:
       - main
 
 jobs:
-  run-on-macos-x64:
-    runs-on: macos-latest
+  run-multiarch:
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./
       - uses: ./
       #- uses: jdrouet/action-install-git-metrics@main
       #- uses: jdrouet/action-install-git-metrics@main
       - name: execute git-metrics
         run: git-metrics --help
-
-  run-on-linux-x64:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
       - uses: ./
-      - uses: ./
-      #- uses: jdrouet/action-install-git-metrics@main
-      #- uses: jdrouet/action-install-git-metrics@main
-      - name: execute git-metrics
-        run: git-metrics --help
+        id: reinstall
+      - name: check if reinstalled
+        if: ${{ steps.reinstall.outputs.already-installed == 'false' }}
+        run: exit 1
