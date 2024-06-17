@@ -51,3 +51,8 @@ jobs:
       - uses: ./
       - name: execute git-metrics
         run: git-metrics --help
+      - uses: ./
+        id: reinstall
+      - name: check if reinstall
+        if: ${{ steps.reinstall.outputs.already-installed == 'false' }}
+        run: exit 1
