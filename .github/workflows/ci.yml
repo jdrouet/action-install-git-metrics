@@ -45,14 +45,19 @@ jobs:
       fail-fast: true
       matrix:
         platform: ['macos-latest', 'ubuntu-latest']
+        version: ['v0.1.2']
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
       - name: execute git-metrics
         run: git-metrics --help
+        with:
+          version: ${{ matrix.version }}
       - uses: ./
         id: reinstall
       - name: check if reinstall
         if: ${{ steps.reinstall.outputs.already-installed == 'false' }}
         run: exit 1
+        with:
+          version: ${{ matrix.version }}

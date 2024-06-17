@@ -53,15 +53,22 @@ export async function run(): Promise<void> {
     if (await checkAlreadyInstalled()) {
       core.info('git-metrics already installed');
       core.setOutput('already-installed', 'true');
-      return;
+      if (core.getInput('force') === 'false') {
+        core.setOutput('installed', 'false');
+        core.debug('force is set to false, aborting installation');
+        return;
+      }
+      core.debug('force is set to true, reinstalling');
+    } else {
+      core.setOutput('already-installed', 'false');
     }
-    core.setOutput('already-installed', 'false');
 
     const filename = getFilenameFromPlatform();
     if (!filename) return;
 
     const version = core.getInput('version');
     await download(filename, version);
+    core.setOutput('installed', 'true');
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message);

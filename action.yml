@@ -9,14 +9,21 @@ branding:
 
 # Define your inputs here.
 inputs:
+  force:
+    description: 'Wether we should force the reinstall of an existing file'
+    required: false
+    default: 'false'
   version:
     description: 'git-metrics version'
+    required: false
     default: 'v0.1.2'
 
 # Define your outputs here.
 outputs:
   already-installed:
     description: 'Wether git-metrics was already installed'
+  installed:
+    description: 'Wether git-metrics has been installed in the process'
 
 runs:
   using: node20
