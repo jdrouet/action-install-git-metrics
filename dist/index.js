@@ -28841,8 +28841,10 @@ function getFilenameFromPlatform() {
     return undefined;
 }
 async function download(filename, version) {
+    core.debug('creating bin directory and adding to path');
     await io.mkdirP(`${node_process_1.env.HOME}/.local/bin`);
     core.addPath(`${node_process_1.env.HOME}/.local/bin`);
+    core.info(`downloading ${filename} ${version}`);
     const gitMetricsPath = await tc.downloadTool(`https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`);
     await io.mv(gitMetricsPath, `${node_process_1.env.HOME}/.local/bin`);
 }
@@ -28853,13 +28855,16 @@ async function download(filename, version) {
 async function run() {
     try {
         if (await checkAlreadyInstalled()) {
-            core.debug('git-metrics already installed');
+            core.info('git-metrics already installed');
+            core.setOutput('already-installed', 'true');
             return;
         }
+        core.setOutput('already-installed', 'false');
         const filename = getFilenameFromPlatform();
         if (!filename)
             return;
-        await download(filename, 'v0.1.2');
+        const version = core.getInput('version');
+        await download(filename, version);
     }
     catch (error) {
         // Fail the workflow run if an error occurs

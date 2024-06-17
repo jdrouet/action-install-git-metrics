@@ -30,9 +30,11 @@ function getFilenameFromPlatform(): string | undefined {
 }
 
 async function download(filename: string, version: string): Promise<void> {
+  core.debug('creating bin directory and adding to path');
   await io.mkdirP(`${env.HOME}/.local/bin`);
   core.addPath(`${env.HOME}/.local/bin`);
 
+  core.info(`downloading ${filename} ${version}`);
   const gitMetricsPath = await tc.downloadTool(
     `https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`,
   );
@@ -46,14 +48,17 @@ async function download(filename: string, version: string): Promise<void> {
 export async function run(): Promise<void> {
   try {
     if (await checkAlreadyInstalled()) {
-      core.debug('git-metrics already installed');
+      core.info('git-metrics already installed');
+      core.setOutput('already-installed', 'true');
       return;
     }
+    core.setOutput('already-installed', 'false');
 
     const filename = getFilenameFromPlatform();
     if (!filename) return;
 
-    await download(filename, 'v0.1.2');
+    const version = core.getInput('version');
+    await download(filename, version);
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message);
