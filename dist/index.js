@@ -28845,8 +28845,7 @@ async function download(filename, version) {
     await io.mkdirP(`${node_process_1.env.HOME}/.local/bin`);
     core.addPath(`${node_process_1.env.HOME}/.local/bin`);
     core.info(`downloading ${filename} ${version}`);
-    const gitMetricsPath = await tc.downloadTool(`https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`);
-    await io.mv(gitMetricsPath, `${node_process_1.env.HOME}/.local/bin`);
+    await tc.downloadTool(`https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`, `${node_process_1.env.HOME}/.local/bin/git-metrics`);
 }
 /**
  * The main function for the action.

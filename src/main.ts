@@ -35,10 +35,10 @@ async function download(filename: string, version: string): Promise<void> {
   core.addPath(`${env.HOME}/.local/bin`);
 
   core.info(`downloading ${filename} ${version}`);
-  const gitMetricsPath = await tc.downloadTool(
+  await tc.downloadTool(
     `https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`,
+    `${env.HOME}/.local/bin/git-metrics`,
   );
-  await io.mv(gitMetricsPath, `${env.HOME}/.local/bin`);
 }
 
 /**
