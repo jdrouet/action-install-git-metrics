@@ -1,6 +1,6 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'git-metrics install'
+description: 'A GitHub action to install git-metrics'
+author: 'Jeremie Drouet <jeremie.drouet@gmail.com>'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
