@@ -1,68 +1,23 @@
----
-name: "Install git-metrics"
-description: "This action will download the git-metrics binary from github and install it on the current runner."
+name: 'The name of your action here'
+description: 'Provide a description here'
+author: 'Your name or organization here'
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: activity
-  color: white
+  icon: 'heart'
+  color: 'red'
+
+# Define your inputs here.
 inputs:
   version:
-    description: "Expected version of git-metrics"
-    required: false
-    default: "latest"
+    description: 'git-metrics version'
+    default: 'v0.1.2'
+
+# Define your outputs here.
+outputs:
+  time:
+    description: 'Your output description here'
+
 runs:
-  using: composite
-  steps:
-    - name: install gh
-      uses: actions4gh/setup-gh@v1.0.2
-
-    - name: install jq
-      uses: dcarbone/install-jq-action@v2.1.0
-
-    - name: creating bin directory in path
-      shell: bash
-      run: |
-        mkdir -p $HOME/.local/bin
-        if [ -z "$( echo $GITHUB_PATH | grep $HOME/.local/bin )" ]; then
-            echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-        fi
-
-    - name: set user name
-      shell: bash
-      run: git config --global user.name 'github-actions[bot]'
-
-    - name: set user email
-      shell: bash
-      run: git config --global user.email "$GITHUB_ACTOR_ID+$GITHUB_ACTOR@users.noreply.github.com"
-
-    - name: downloading binary
-      shell: bash
-      run: |
-        if [[ "$RUNNER_OS" == "Linux" ]]; then
-            if [[ "$RUNNER_ARCH" == "X64" ]]; then
-                export REMOTE_FILENAME=git-metrics_linux-x86_64
-            elif [[ "$RUNNER_ARCH" == "ARM64" ]]; then
-                export REMOTE_FILENAME=git-metrics_linux-aarch64
-            else
-                echo "::error title=⛔ platform arch ($RUNNER_ARCH) not yet supported"
-            fi
-            export TARGET_FILE=$HOME/.local/bin/git-metrics
-        elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            if [[ "$RUNNER_ARCH" == "X64" ]]; then
-                export REMOTE_FILENAME=git-metrics_darwin-x86_64
-            elif [[ "$RUNNER_ARCH" == "ARM64" ]]; then
-                export REMOTE_FILENAME=git-metrics_darwin-aarch64
-            else
-                echo "::error title=⛔ platform arch ($RUNNER_ARCH) not yet supported"
-            fi
-            export TARGET_FILE=$HOME/.local/bin/git-metrics
-        else
-            echo "::error title=⛔ platform os ($RUNNER_OS) not yet supported"
-            exit 1
-        fi
-
-        releases=$(gh api --method GET /repos/jdrouet/git-metrics/releases --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28")
-        binary_url=$(echo $releases | jq --raw-output ".[0].assets | map(select(.name == \"$REMOTE_FILENAME\")) | first | .browser_download_url")
-        curl -L -o $TARGET_FILE $binary_url
-        chmod +x $TARGET_FILE
-      env:
-        GH_TOKEN: ${{ github.token }}
+  using: node20
+  main: dist/index.js
