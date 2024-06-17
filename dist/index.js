@@ -28841,14 +28841,18 @@ function getFilenameFromPlatform() {
     }
     return undefined;
 }
+const BIN_DIR = `${node_process_1.env.HOME}/.local/bin`;
+const BIN_PATH = `${BIN_DIR}/git-metrics`;
 async function download(filename, version) {
     core.debug('creating bin directory and adding to path');
-    await io.mkdirP(`${node_process_1.env.HOME}/.local/bin`);
-    core.addPath(`${node_process_1.env.HOME}/.local/bin`);
+    await io.mkdirP(BIN_DIR);
+    core.addPath(BIN_DIR);
+    core.debug('removing existing file');
+    await io.rmRF(BIN_PATH);
     core.info(`downloading ${filename} ${version}`);
-    await tc.downloadTool(`https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`, `${node_process_1.env.HOME}/.local/bin/git-metrics`);
+    await tc.downloadTool(`https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`, BIN_PATH);
     core.debug('make binary executable');
-    await (0, promises_1.chmod)(`${node_process_1.env.HOME}/.local/bin/git-metrics`, '555');
+    await (0, promises_1.chmod)(BIN_PATH, '555');
 }
 /**
  * The main function for the action.

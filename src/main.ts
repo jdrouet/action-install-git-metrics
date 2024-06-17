@@ -30,18 +30,23 @@ function getFilenameFromPlatform(): string | undefined {
   return undefined;
 }
 
+const BIN_DIR = `${env.HOME}/.local/bin`;
+const BIN_PATH = `${BIN_DIR}/git-metrics`;
+
 async function download(filename: string, version: string): Promise<void> {
   core.debug('creating bin directory and adding to path');
-  await io.mkdirP(`${env.HOME}/.local/bin`);
-  core.addPath(`${env.HOME}/.local/bin`);
+  await io.mkdirP(BIN_DIR);
+  core.addPath(BIN_DIR);
 
+  core.debug('removing existing file');
+  await io.rmRF(BIN_PATH);
   core.info(`downloading ${filename} ${version}`);
   await tc.downloadTool(
     `https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`,
-    `${env.HOME}/.local/bin/git-metrics`,
+    BIN_PATH,
   );
   core.debug('make binary executable');
-  await chmod(`${env.HOME}/.local/bin/git-metrics`, '555');
+  await chmod(BIN_PATH, '555');
 }
 
 /**
