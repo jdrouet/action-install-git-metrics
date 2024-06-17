@@ -28814,6 +28814,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const node_process_1 = __nccwpck_require__(7742);
+const promises_1 = __nccwpck_require__(3977);
 const io = __importStar(__nccwpck_require__(7436));
 const tc = __importStar(__nccwpck_require__(7784));
 async function checkAlreadyInstalled() {
@@ -28846,6 +28847,8 @@ async function download(filename, version) {
     core.addPath(`${node_process_1.env.HOME}/.local/bin`);
     core.info(`downloading ${filename} ${version}`);
     await tc.downloadTool(`https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`, `${node_process_1.env.HOME}/.local/bin/git-metrics`);
+    core.debug('make binary executable');
+    await (0, promises_1.chmod)(`${node_process_1.env.HOME}/.local/bin/git-metrics`, '555');
 }
 /**
  * The main function for the action.
@@ -28985,6 +28988,14 @@ module.exports = require("net");
 
 "use strict";
 module.exports = require("node:events");
+
+/***/ }),
+
+/***/ 3977:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
 
 /***/ }),
 

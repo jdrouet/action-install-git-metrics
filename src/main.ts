@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import { env } from 'node:process';
+import { chmod } from 'node:fs/promises';
 import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 
@@ -39,6 +40,8 @@ async function download(filename: string, version: string): Promise<void> {
     `https://github.com/jdrouet/git-metrics/releases/download/${version}/${filename}`,
     `${env.HOME}/.local/bin/git-metrics`,
   );
+  core.debug('make binary executable');
+  await chmod(`${env.HOME}/.local/bin/git-metrics`, '555');
 }
 
 /**
