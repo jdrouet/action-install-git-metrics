@@ -49,15 +49,24 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./
-      - name: execute git-metrics
-        run: git-metrics --help
+      - name: simply install
+        uses: ./
         with:
           version: ${{ matrix.version }}
-      - uses: ./
+      - name: execute git-metrics
+        run: git-metrics --help
+      - name: reinstall without forcing
+        uses: ./
         id: reinstall
       - name: check if reinstall
         if: ${{ steps.reinstall.outputs.already-installed == 'false' }}
         run: exit 1
+      - name: force reinstall
+        uses: ./
+        id: force-reinstall
         with:
+          force: 'true'
           version: ${{ matrix.version }}
+      - name: check if force reinstall
+        if: ${{ steps.force-reinstall.outputs.installed == 'false' }}
+        run: exit 1
