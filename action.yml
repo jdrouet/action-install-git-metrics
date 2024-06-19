@@ -16,7 +16,7 @@ inputs:
   version:
     description: 'git-metrics version'
     required: false
-    default: 'v0.1.3'
+    default: 'v0.1.4'
 
 # Define your outputs here.
 outputs:
