@@ -33,6 +33,14 @@ function getFilenameFromPlatform(): string | undefined {
 const BIN_DIR = `${env.HOME}/.local/bin`;
 const BIN_PATH = `${BIN_DIR}/git-metrics`;
 
+function getVersion(): Promise<string> {
+  const inputVersion = core.getInput('version');
+  if (inputVersion !== 'latest') {
+    return Promise.resolve(inputVersion);
+  }
+  return Promise.resolve('v0.2.1');
+}
+
 async function download(filename: string, version: string): Promise<void> {
   core.debug('creating bin directory and adding to path');
   await io.mkdirP(BIN_DIR);
@@ -71,7 +79,7 @@ export async function run(): Promise<void> {
     const filename = getFilenameFromPlatform();
     if (!filename) return;
 
-    const version = core.getInput('version');
+    const version = await getVersion();
     await download(filename, version);
     core.setOutput('installed', 'true');
   } catch (error) {
