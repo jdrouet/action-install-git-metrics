@@ -1,4 +1,4 @@
-# GitHub action to install git-metrics
+# GitHub Action to install git-metrics
 
 [![GitHub Super-Linter](https://github.com/jdrouet/action-install-git-metrics/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yml/badge.svg)

@@ -1,8 +1,9 @@
 import * as core from '@actions/core';
-import { env } from 'node:process';
-import { chmod } from 'node:fs/promises';
+import * as github from '@actions/github';
 import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
+import { env } from 'node:process';
+import { chmod } from 'node:fs/promises';
 
 async function checkAlreadyInstalled(): Promise<boolean> {
   try {
@@ -32,6 +33,20 @@ function getFilenameFromPlatform(): string | undefined {
 
 const BIN_DIR = `${env.HOME}/.local/bin`;
 const BIN_PATH = `${BIN_DIR}/git-metrics`;
+
+async function getVersion(): Promise<string> {
+  const inputVersion = core.getInput('version');
+  if (inputVersion !== 'latest') {
+    return inputVersion;
+  }
+  const token = core.getInput('GITHUB_TOKEN');
+  const octokit = github.getOctokit(token);
+  const latest = await octokit.rest.repos.getLatestRelease({
+    owner: 'jdrouet',
+    repo: 'git-metrics',
+  });
+  return latest.data.tag_name;
+}
 
 async function download(filename: string, version: string): Promise<void> {
   core.debug('creating bin directory and adding to path');
@@ -71,7 +86,7 @@ export async function run(): Promise<void> {
     const filename = getFilenameFromPlatform();
     if (!filename) return;
 
-    const version = core.getInput('version');
+    const version = await getVersion();
     await download(filename, version);
     core.setOutput('installed', 'true');
   } catch (error) {

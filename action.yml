@@ -16,7 +16,12 @@ inputs:
   version:
     description: 'git-metrics version'
     required: false
-    default: 'v0.2.1'
+    default: 'latest'
+  GITHUB_TOKEN:
+    description:
+      'Github token of the repository (automatically created by Github)'
+    default: ${{ github.token }}
+    required: false
 
 # Define your outputs here.
 outputs:
